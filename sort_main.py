@@ -1,13 +1,10 @@
-
-
-
 import tkinter as tk
-from tkinter import messagebox
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 import numpy as np
+
 import time
 
 
