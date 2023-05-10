@@ -13,7 +13,7 @@ class SortAI:
         self.main = tk.Tk()
         self.main.title("Sort AI")
         self.main.geometry("1280x720")
-        self.main.resizable(False, False)
+        self.main.minsize(1280,720)
         self.main.configure(background="#000000")
         
         # self.main üzerinde soldaki frame 1x sağdaki frame 4x katı büyüklükte olmak üzere iki adet frame oluşturuldu.
@@ -46,12 +46,11 @@ class SortAI:
         radio_button_frame = tk.Frame(self.left_frame,bg="#000000" )
         radio_button_frame.grid(row=6, column=0, padx=10, pady=10 )
         
-        self.filters = ['Bubble Sort','Insertion Sort','Sort Sort','deneme4','deneme5','deneme6','deneme7','deneme8','deneme9']
+        self.filters = ['Bubble Sort','Insertion Sort','Selection Sort','deneme4','deneme5','deneme6','deneme7','deneme8','deneme9']
         self.selected_filter = tk.StringVar(value=self.filters[1])
         
         self.radio_buttons = []
         for filter in self.filters:
-            #radio button daireleri büyüklüğü ayarlandı.
             rb = tk.Radiobutton(radio_button_frame, text=filter, variable=self.selected_filter, value=filter, bg="#000000", fg="#ffffff",font=("Arial", 14), selectcolor="red",activeforeground='red', bd=0, indicatoron=0)
             self.radio_buttons.append(rb)
         
@@ -71,6 +70,11 @@ class SortAI:
             for i,j in enumerate(range(n-i-1)):
                 if data[j] > data[j+1]:
                     data[j], data[j+1] = data[j+1], data[j]
+                    self.changed_items = True
+                    self.counter = j + 1
+                    yield data
+                    continue
+                self.changed_items = False
                 self.counter = j + 1
                 yield data
             self.finished_rects.append(self.counter)
@@ -96,26 +100,29 @@ class SortAI:
         self.stop_code = True
         yield data
     
-    def sort_sort(self,data):
+    def selection_sort(self,data):
+        self.finished_rects = []
         self.stop_code = False
         for i in range(len(data)):
-            print('döngü başı')
             for j in range(i+1, len(data)):
+                self.checked_items = [j,i,None]
                 if data[j] < data[i]:
-                    self.checked_items = [i,j]
                     data[i], data[j] = data[j], data[i]
-                    self.checked_items = [j,i]
-                    yield data
+                    self.checked_items = [i,j,j]
+                else:
+                    self.checked_items = [i,j,None]
+                yield data
+            self.finished_rects.append(i)
         self.stop_code = True
         yield data
-
             
     def create_widgets(self):
         # rastgele sayılardan oluşan bir dizi oluşturalım
         self.data = np.random.randint(int(self.data_min.get()),int(self.data_max.get()),size=int(self.data_size.get()))
         self.finished_rects = []
+        
         # çizim için bir figür oluşturalım ve büyüklüğü right_frame e göre ayarlayalım
-        self.fig = Figure(figsize=(10, 7.2), dpi=100)
+        self.fig = Figure(figsize=(10.8, 7.2), dpi=100)
         self.ax = self.fig.add_subplot(1, 1, 1)
         
         self.ax.set_ylabel("Value")
@@ -135,10 +142,15 @@ class SortAI:
                 if self.counter == c:
                     second_rect = self.counter -1
                     finished_rect = self.counter
-                    self.bar_rects[self.counter].set_color("blue")
-                    self.bar_rects[second_rect].set_color("blue")
+                    if self.changed_items:
+                        self.bar_rects[self.counter].set_color("red")
+                        self.bar_rects[second_rect].set_color("red")
+                    else:
+                        self.bar_rects[self.counter].set_color("orange")
+                        self.bar_rects[second_rect].set_color("blue")
+                    
                 else:
-                    rect.set_color("red")
+                    rect.set_color("#666666")
                 
                 rect.set_height(val)
                 self.bar_labels[c].set_text(val)
@@ -151,10 +163,12 @@ class SortAI:
         
         def update_fig_insertion(data):
             for c, (rect, val) in enumerate(zip(self.bar_rects, data)):
-                if c == self.checked_items[0] or c == self.checked_items[1]:
+                if c == self.checked_items[0]:
                     rect.set_color("blue")
+                elif c == self.checked_items[1]:
+                    rect.set_color("orange")
                 else:
-                    rect.set_color("red")
+                    rect.set_color("#666666")
                 
                 rect.set_height(val)
                 self.bar_labels[c].set_text(val)
@@ -165,22 +179,27 @@ class SortAI:
                         rect.set_color("green")
                     self.animation.event_source.stop()
         
-        def update_fig_sort(data):
+        def update_fig_selection(data):
             for c, (rect, val) in enumerate(zip(self.bar_rects, data)):
                 if c == self.checked_items[0]:
                     rect.set_color('blue')
-                elif c == self.checked_items[1]:
+                elif c == self.checked_items[1] and self.checked_items[2] is None:
                     rect.set_color('orange')
-                else:
+                elif c == self.checked_items[2] and self.checked_items[2] is not None:
                     rect.set_color('red')
+                else:
+                    rect.set_color('#666666')
+                
                 
                 rect.set_height(val)
                 self.bar_labels[c].set_text(val)
                 self.bar_labels[c].set_position((rect.get_x() + rect.get_width() / 2, rect.get_height()))
                 
+                for frect in self.finished_rects:
+                    self.bar_rects[frect].set_color("green")
+                
                 if self.stop_code == True:
-                    for rect in self.bar_rects:
-                        rect.set_color("green")
+
                     self.animation.event_source.stop()
                 
             
@@ -195,12 +214,11 @@ class SortAI:
             self.canvas = FigureCanvasTkAgg(self.fig, master=self.right_frame)
             self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
             self.animation = FuncAnimation(self.fig, func=update_fig_insertion, frames=self.insertion_sort(self.data.copy()), repeat=True)
-        elif self.selected_filter_data == 'Sort Sort':
+        elif self.selected_filter_data == 'Selection Sort':
             self.canvas = FigureCanvasTkAgg(self.fig, master=self.right_frame)
             self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-            self.animation = FuncAnimation(self.fig, func=update_fig_sort, frames=self.sort_sort(self.data.copy()), repeat=True)
+            self.animation = FuncAnimation(self.fig, func=update_fig_selection, frames=self.selection_sort(self.data.copy()), repeat=True)
 
-    
     def start(self):
         self.right_frame.destroy()
         self.right_frame = tk.Frame(self.main, width=1080, height=720, bg="#ffffff")
