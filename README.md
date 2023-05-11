@@ -35,7 +35,8 @@ pip install numpy
 
 <h2>Example appeared </h2>
 
-![ezgif com-resize](https://github.com/mehmtsari/SortAI/assets/120599161/fd0d4b16-2d2e-4a64-9282-24508168dec5)
+![ezgif com-resize](https://github.com/mehmtsari/SortAI/assets/120599161/9d692217-fbb4-4a37-ac2a-5af318e18d78)
+
 
 
 <div style='margin-bottom:200px'> </div>
@@ -76,5 +77,4 @@ pip install numpy
 
 <h2> Örnek Çıktı </h2>
 
-![ezgif com-resize](https://github.com/mehmtsari/SortAI/assets/120599161/fd0d4b16-2d2e-4a64-9282-24508168dec5)
-
+![ezgif com-resize](https://github.com/mehmtsari/SortAI/assets/120599161/9d692217-fbb4-4a37-ac2a-5af318e18d78)
