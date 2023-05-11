@@ -16,6 +16,10 @@ class SortAI:
         self.main.minsize(1280,720)
         self.main.configure(background="#000000")
         
+        def toggle_fullscreen(event=None):
+            self.main.attributes("-fullscreen", not self.main.attributes("-fullscreen"))
+        self.main.bind("<F11>",toggle_fullscreen)
+        
         # self.main üzerinde soldaki frame 1x sağdaki frame 4x katı büyüklükte olmak üzere iki adet frame oluşturuldu.
         
         self.left_frame = tk.Frame(self.main, width=200, height=720, bg="#000000")
@@ -24,27 +28,32 @@ class SortAI:
         self.right_frame = tk.Frame(self.main, width=1080, height=720, bg="#ffffff")
         self.right_frame.grid(row=0, column=1)
         
+        
+        
         # Left fram üzerindeki adımlar
+        title_label = tk.Label(self.left_frame, text='Sorting Algoritmaları',font=("Arial Bold",20), bg='#000000',fg='red')
+        title_label.grid(row=0,column=0,pady=10)
+        
         data_size_label = tk.Label(self.left_frame, text="Data Size", font=("Arial"), bg="#000000", fg="#ffffff")
-        data_size_label.grid(row=0, column=0, padx=10, pady=10)
+        data_size_label.grid(row=1, column=0, padx=10, pady=10)
         self.data_size = tk.Entry(self.left_frame, font=("Arial", 20) ,width=15)
-        self.data_size.grid(row=1, column=0, padx=10, pady=10)
+        self.data_size.grid(row=2, column=0, padx=10, pady=10)
         
         
         data_min_label = tk.Label(self.left_frame, text="Minimum İnt (Default: 0)", font=("Arial"), bg="#000000", fg="#ffffff")
-        data_min_label.grid(row=2, column=0)
+        data_min_label.grid(row=3, column=0)
         self.data_min = tk.Entry(self.left_frame,  font=("Arial", 20) ,width=10)
-        self.data_min.grid(row=3, column=0)
+        self.data_min.grid(row=4, column=0)
         
         data_max_label = tk.Label(self.left_frame, text="Maximum İnt (Default: 100)", font=("Arial"), bg="#000000", fg="#ffffff")
-        data_max_label.grid(row=4, column=0, padx=10, pady=10)
+        data_max_label.grid(row=5, column=0, padx=10, pady=10)
         self.data_max = tk.Entry(self.left_frame,  font=("Arial", 20) ,width=10)
-        self.data_max.grid(row=5, column=0, padx=10, pady=10)
+        self.data_max.grid(row=6, column=0, padx=10, pady=10)
         
          # listedeki verilerden oluşan radiobuttonlar oluşturuldu. Altında bulunan butona tıklandığında listbox da seçili olan veri print edilecek.
         
         radio_button_frame = tk.Frame(self.left_frame,bg="#000000" )
-        radio_button_frame.grid(row=6, column=0, padx=10, pady=10 )
+        radio_button_frame.grid(row=7, column=0, padx=10, pady=10 )
         
         self.filters = ['Bubble Sort','Insertion Sort','Selection Sort','Quick Sort']
         self.selected_filter = tk.StringVar(value=self.filters[1])
@@ -58,7 +67,7 @@ class SortAI:
             rb.pack(anchor=tk.E)
             
         start_button = tk.Button(self.left_frame, text="Start", font=("Arial", 20), bg="#000000", fg="#ffffff", command=self.start)
-        start_button.grid(row=7, column=0, padx=10, pady=10)
+        start_button.grid(row=8, column=0, padx=10, pady=10)
 
         self.main.mainloop()
         
@@ -122,11 +131,8 @@ class SortAI:
         step = 1
         self.finished_rects = []
         while stack:
-            print(f"Adım {step}: {data}")
             step += 1
-            
             left, right = stack.pop()
-            print(f"\tleft: {left}, right: {right}")
             for i in range(right+1,len(data)):
                 if i not in self.finished_rects:
                     self.finished_rects.append(i)
@@ -139,19 +145,16 @@ class SortAI:
             i = left
             for j in range(left, right):
                 if data[j] < self.pivot:
-                    print(f'\t{data[j]} < {self.pivot} olduğu için yer değiştirmiyoruz: {data}')
                     data[i], data[j] = data[j], data[i]
                     self.checked_items = [i, j,True]
                     yield data
                     i += 1
             data[i], data[right] = data[right], data[i]
-            print(f"\tYer değiştiriyor {data[i]} with {data[right]}: {data}")
             self.checked_items = [j,i,True]
             yield data
                         
             stack.append((left, i-1))
             stack.append((i+1, right))
-        print(f"Final sorted dataay: {data}")
         self.finished_rects.append(0)
         yield data
         return data
