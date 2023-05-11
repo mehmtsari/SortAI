@@ -2,7 +2,7 @@
     Previewing sort algorithms
     <span style='color:Red; font-weight:1000;'>ENG </span> 
     <br>
-    <span> <img src='https://img.shields.io/github/license/mehmtsari/SortAI?style=for-the-badge'/></span>
+    <span> <img src='https://img.shields.io/github/license/mehmtsari/SortAI'/></span>
 </h1>
 
 <h2> General explanation </h2>
@@ -44,7 +44,7 @@ pip install numpy
     Sıralama Algoritmaları ön izleme
     <span style='color:Red; font-weight:1000;'>TR </span> 
     <br>
-    <span> <img src='https://img.shields.io/github/license/mehmtsari/SortAI?style=for-the-badge'/></span>
+    <span> <img src='https://img.shields.io/github/license/mehmtsari/SortAI'/></span>
 </h1>
 
 <h2> Genel Açıklama </h2>
