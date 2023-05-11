@@ -40,20 +40,23 @@ class SortAI:
         self.data_size.grid(row=2, column=0, padx=10, pady=10)
         
         
-        data_min_label = tk.Label(self.left_frame, text="Minimum İnt (Default: 0)", font=("Arial"), bg="#000000", fg="#ffffff")
+        data_min_label = tk.Label(self.left_frame, text="Minium Value (Default: 0)", font=("Arial"), bg="#000000", fg="#ffffff")
         data_min_label.grid(row=3, column=0)
         self.data_min = tk.Entry(self.left_frame,  font=("Arial", 20) ,width=10)
         self.data_min.grid(row=4, column=0)
         
-        data_max_label = tk.Label(self.left_frame, text="Maximum İnt (Default: 100)", font=("Arial"), bg="#000000", fg="#ffffff")
+        data_max_label = tk.Label(self.left_frame, text="Maximum Value (Default: 100)", font=("Arial"), bg="#000000", fg="#ffffff")
         data_max_label.grid(row=5, column=0, padx=10, pady=10)
         self.data_max = tk.Entry(self.left_frame,  font=("Arial", 20) ,width=10)
         self.data_max.grid(row=6, column=0, padx=10, pady=10)
         
          # listedeki verilerden oluşan radiobuttonlar oluşturuldu. Altında bulunan butona tıklandığında listbox da seçili olan veri print edilecek.
         
+        sort_type_label = tk.Label(self.left_frame, text="Sort Type", font=("Arial"), bg="#000000", fg="red")
+        sort_type_label.grid(row=7, column=0, padx=10, pady=10)
+        
         radio_button_frame = tk.Frame(self.left_frame,bg="#000000" )
-        radio_button_frame.grid(row=7, column=0, padx=10, pady=10 )
+        radio_button_frame.grid(row=8, column=0, padx=10, pady=10 )
         
         self.filters = ['Bubble Sort','Insertion Sort','Selection Sort','Quick Sort']
         self.selected_filter = tk.StringVar(value=self.filters[1])
@@ -66,8 +69,8 @@ class SortAI:
         for rb in self.radio_buttons:
             rb.pack(anchor=tk.E)
             
-        start_button = tk.Button(self.left_frame, text="Start", font=("Arial", 20), bg="#000000", fg="#ffffff", command=self.start)
-        start_button.grid(row=8, column=0, padx=10, pady=10)
+        start_button = tk.Button(self.left_frame, text="Sort", font=("Arial", 20), bg="#000000", fg="#ffffff", command=self.start)
+        start_button.grid(row=9, column=0, padx=10, pady=10)
 
         self.main.mainloop()
         
